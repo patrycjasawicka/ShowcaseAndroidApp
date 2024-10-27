@@ -1,56 +1,65 @@
 package com.example.showcaseapplication
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.example.showcaseapplication.ui.theme.ShowcaseApplicationTheme
 
-// TODO: Stwórz nową aktywność, która będzie odbierać implicit intent zdefiniowany poniżej w funkcji shareData
-// Zmodyfikuj w odpowiedni sposób AndroidManifest
-// Dodaj logikę, która będzie odpowiadać za odczytanie danych z intentu
-// Wypisz za pomocą Toasta otrzymany tekst
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             ShowcaseApplicationTheme {
-                DataSharingButton()
+                GreetingScreen()
             }
         }
     }
 }
 
 @Composable
-fun DataSharingButton() {
-    val context = LocalContext.current
-    Box(modifier = Modifier.fillMaxSize()) {
-        Button(onClick = {
-            shareData(context)
-        }, modifier = Modifier.align(Alignment.Center)) {
-            Text(
-                text = "Click me to send the data!",
-            )
-        }
-    }
-}
+fun GreetingScreen() {
+    // TODO: Wyświetl listę elementów pod obrazkiem
+    val items = listOf("Alice", "Bob", "Charlie", "Diana", "Ethan")
 
-private fun shareData(context: Context) {
-    val shareIntent = Intent().apply {
-        action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TEXT, "Check out this awesome data from my app!")
-        type = "text/plain"
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Hello, Welcome to Jetpack Compose!", color = Color.Black)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(onClick = { }) {
+            Text(text = "Click Me")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            contentDescription = "Sample Image",
+            modifier = Modifier.size(100.dp)
+        )
     }
-    context.startActivity(Intent.createChooser(shareIntent, "Share text via"))
 }
