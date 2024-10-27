@@ -4,28 +4,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material3.Button
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.showcaseapplication.ui.theme.ShowcaseApplicationTheme
 
@@ -35,54 +29,64 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ShowcaseApplicationTheme {
-                StateHolder()
+                TemperatureConverterState()
             }
         }
     }
 }
 
-@Composable
-fun StateHolder() {
-    var counter by remember { mutableStateOf(0) }
+fun convertCelsiusAndFahrenheit(isCelsiusToFahrenheit: Boolean, temperature: String): Float =
+    if (isCelsiusToFahrenheit) {
+        ((temperature.toFloatOrNull() ?: 0f) * 9 / 5) + 32
+    } else {
+        ((temperature.toFloatOrNull() ?: 0f) - 32) * 5 / 9
+    }
 
-    GreetingScreen(counter = counter, onIncrement = { counter++ })
+@Composable
+fun TemperatureConverterState() {
+    // TODO: Stwórz stan, który będzie przechowywał temperaturę, stan checkboxa (isCelsiusToFahrenheit) i wynik konwersji
+    // Wykorzystaj do tego remember, derivedStateOf i callbacki
+
+//    TemperatureConverter()
 }
 
 @Composable
-fun GreetingScreen(counter: Int, onIncrement: () -> Unit) {
+private fun TemperatureConverter(
+    temperatureInput: String,
+    onTemperatureChanged: (String) -> Unit,
+    isCelsiusToFahrenheit: Boolean,
+    onIsCelsiusChanged: (Boolean) -> Unit,
+    convertedTemperature: Float
+) {
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(16.dp)
     ) {
-        Text(text = "Hello, Welcome to Jetpack Compose!", color = Color.Black)
+        TextField(
+            value = temperatureInput,
+            onValueChange = onTemperatureChanged,
+            label = { Text("Enter temperature") },
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Button clicked: $counter times", color = Color.Black)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(onClick = { onIncrement() }) {
-            Text(text = "Click Me")
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Celsius to Fahrenheit")
+            Checkbox(
+                checked = isCelsiusToFahrenheit,
+                onCheckedChange = onIsCelsiusChanged
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Image(
-            imageVector = Icons.Default.Face,
-            contentDescription = "Sample Image",
-            modifier = Modifier.size(100.dp)
+        Text(
+            text = "Converted Temperature: $convertedTemperature",
+            style = MaterialTheme.typography.headlineMedium
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewRecompositionDemoScreen() {
-    StateHolder()
 }
