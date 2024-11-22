@@ -33,63 +33,52 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ShowcaseApplicationTheme {
-                AndroidAliens()
+                PositioningTask()
             }
         }
     }
 }
 
 @Composable
-fun OverlappingComposable() {
-    Box(contentAlignment = Alignment.Center) {
-        AndroidAliens()
-        Text(text = "Overlapping text Hello!", modifier = Modifier.padding(15.dp))
-    }
-}
-
-
-@Composable
-fun AndroidAliens() {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .size(400.dp, 300.dp)
-            .background(Color.Gray)
+fun PositioningTask() {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp)
     ) {
-        AndroidAlien(
-            color = Color.Red,
+        Text("Row Example", style = MaterialTheme.typography.headlineMedium)
+        Row(
             modifier = Modifier
-                .size(70.dp)
-                .padding(4.dp)
-        )
-        AndroidAlien(
-            color = Color.Green,
-            modifier = Modifier
-                .size(70.dp)
-                .padding(4.dp)
-        )
+                .fillMaxWidth()
+                .background(Color.LightGray),
+        ) {
+            Text("Item 1", Modifier.background(Color.Red).padding(8.dp))
+            Text("Item 2", Modifier.background(Color.Green).padding(8.dp))
+            Text("Item 3", Modifier.background(Color.Blue).padding(8.dp))
+        }
 
-//        AndroidAlien(
-//            color = Color.Blue,
-//            modifier = Modifier.align(Alignment.CenterVertically)
-//        )
-//        AndroidAlien(
-//            color = Color.Yellow,
-//            modifier = Modifier.weight(1F)
-//        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text("Column Example", style = MaterialTheme.typography.bodyMedium)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray),
+        ) {
+            Text("Item 1", Modifier.background(Color.Red).padding(8.dp))
+            Text("Item 2", Modifier.background(Color.Green).padding(8.dp))
+            Text("Item 3", Modifier.background(Color.Blue).padding(8.dp))
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text("Box Example", style = MaterialTheme.typography.bodyMedium)
+        Box(
+            modifier = Modifier
+                .size(200.dp)
+                .background(Color.LightGray)
+        ) {
+            Text("Top Start", Modifier.background(Color.Red).padding(8.dp))
+            Text("Center", Modifier.background(Color.Green).padding(8.dp))
+            Text("Bottom End", Modifier.background(Color.Blue).padding(8.dp))
+        }
     }
-}
-
-@Composable
-fun AndroidAlien(
-    color: Color,
-    modifier: Modifier = Modifier,
-) {
-    Image(
-        modifier = modifier,
-        painter = painterResource(R.drawable.ic_launcher_foreground),
-        colorFilter = ColorFilter.tint(color = color),
-        contentDescription = null
-    )
 }
