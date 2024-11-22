@@ -5,19 +5,25 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.showcaseapplication.ui.theme.ShowcaseApplicationTheme
@@ -25,41 +31,65 @@ import com.example.showcaseapplication.ui.theme.ShowcaseApplicationTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             ShowcaseApplicationTheme {
-                GreetingScreen()
+                AndroidAliens()
             }
         }
     }
 }
 
 @Composable
-fun GreetingScreen() {
-    // TODO: Wyświetl listę elementów pod obrazkiem
-    val items = listOf("Alice", "Bob", "Charlie", "Diana", "Ethan")
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Hello, Welcome to Jetpack Compose!", color = Color.Black)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(onClick = { }) {
-            Text(text = "Click Me")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = "Sample Image",
-            modifier = Modifier.size(100.dp)
-        )
+fun OverlappingComposable() {
+    Box(contentAlignment = Alignment.Center) {
+        AndroidAliens()
+        Text(text = "Overlapping text Hello!", modifier = Modifier.padding(15.dp))
     }
+}
+
+
+@Composable
+fun AndroidAliens() {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .size(400.dp, 300.dp)
+            .background(Color.Gray)
+    ) {
+        AndroidAlien(
+            color = Color.Red,
+            modifier = Modifier
+                .size(70.dp)
+                .padding(4.dp)
+        )
+        AndroidAlien(
+            color = Color.Green,
+            modifier = Modifier
+                .size(70.dp)
+                .padding(4.dp)
+        )
+
+//        AndroidAlien(
+//            color = Color.Blue,
+//            modifier = Modifier.align(Alignment.CenterVertically)
+//        )
+//        AndroidAlien(
+//            color = Color.Yellow,
+//            modifier = Modifier.weight(1F)
+//        )
+    }
+}
+
+@Composable
+fun AndroidAlien(
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        modifier = modifier,
+        painter = painterResource(R.drawable.ic_launcher_foreground),
+        colorFilter = ColorFilter.tint(color = color),
+        contentDescription = null
+    )
 }
